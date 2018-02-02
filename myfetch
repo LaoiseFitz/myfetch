@@ -1,0 +1,37 @@
+#!/bin/sh
+#
+# myfetch -- custom sysinfo program
+# github.com/LaoiseFitz
+# 
+
+## DEFINE 
+
+hostname="$(hostname)"
+os="$(uname -o)"
+kernel="$(uname -sr)"
+uptime="$(uptime -p | sed 's/up //')"
+packages="$(dpkg -l | wc -l)"
+shell="$(basename ${SHELL})"
+
+## SET COLOURS
+
+bc="$(tput bold)"     #bold text
+c0="$(tput setaf 0)"
+c1="$(tput setaf 1)"
+c2="$(tput setaf 2)"
+c3="$(tput setaf 3)"
+c4="$(tput setaf 4)"
+c5="$(tput setaf 5)"
+c6="$(tput setaf 6)"
+c7="$(tput setaf 7)"
+rc="$(tput sgr0)"     #reset text style
+
+## RUN
+
+echo "\n"
+echo "${bc}${c6}User:${rc}     ${USER}@$hostname"
+echo "${bc}${c1}OS:${rc}       $os"
+echo "${bc}${c2}Kernel:${rc}   $kernel"
+echo "${bc}${c3}Uptime:${rc}   $uptime"
+echo "${bc}${c4}Packages:${rc} $packages"
+echo "${bc}${c5}Shell:${rc}    $shell"
