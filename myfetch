@@ -1,10 +1,16 @@
 #!/bin/sh
 #
 # myfetch -- custom sysinfo program
-# github.com/LaoiseFitz
+# https://github.com/LaoiseFitz/myfetch
 # 
 
-## DEFINE 
+## FLAGS
+
+turt=true			#flag for displaying turtle
+version="0.02"
+message="Hello ${USER}!"	#default message
+
+## INFO
 
 hostname="$(hostname)"
 os="$(uname -o)"
@@ -26,12 +32,74 @@ c6="$(tput setaf 6)"
 c7="$(tput setaf 7)"
 rc="$(tput sgr0)"     #reset text style
 
-## RUN
+## FUNCTION SETUP
 
-echo "\n"
+helpmsg()
+{
+echo ""
+echo "myfetch version ${version}"
+echo "Laoise Fitzpatrick"
+echo "https://github.com/LaoiseFitz/myfetch"
+echo ""
+echo "Usage:"
+echo "-m | --message [\"your message\"]   change what the turtle says"
+echo "-t | --turtleoff 		  remove the turtle"
+echo "-h | --help 			  display this help"
+}
+
+turtle()
+{
+echo ""
+echo "${c2}               __    \"${message}\"           "
+echo "${c2}    .,-;-;-,. /'_\\ /            "
+echo "${c2}   _/_/_/_|_\\_\\) /            "
+echo "${c2} '-<_><_><_><_>=/\\             "
+echo "${c2}   \`/_/====/_/-'\\_\\          "
+echo "${c2}    \"\"     \"\"    \"\" ${rc} "
+}
+
+sys()
+{
 echo "${bc}${c6}User:${rc}     ${USER}@$hostname"
 echo "${bc}${c1}OS:${rc}       $os"
 echo "${bc}${c2}Kernel:${rc}   $kernel"
 echo "${bc}${c3}Uptime:${rc}   $uptime"
 echo "${bc}${c4}Packages:${rc} $packages"
 echo "${bc}${c5}Shell:${rc}    $shell"
+}
+
+## ARGUMENTS
+
+case  $1  in
+	"-h"|"--help")
+		helpmsg
+		exit 0
+		;;
+	"-t"|"--turtleoff")
+		turt=false
+		;;
+	"-m"|"--message")
+		if [ "${2}" ]
+			then
+			message="${2}"
+		else
+			echo "Error: Please provide a message. Type myfetch -h for more info."
+			exit 1
+		fi
+		;;
+	*)
+		;;
+esac
+
+# RUN
+
+clear
+if [ "${turt}" != false ]
+	then
+		turtle
+fi
+sys
+
+exit 0
+
+#################################################
